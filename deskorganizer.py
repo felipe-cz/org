@@ -1,26 +1,33 @@
+from sys import argv
 import os
 import shutil
 from datetime import date
 
-
-images = [".png", ".jpeg", ".jpg", ".bmp", ".gif", ".tif", ".tiff", ".jfif"]
-documents = [".txt", ".docx", ".pdf", ".pptx", ".xls", "xlsx"]
-
+# adicione sua propria categoria criando uma lista e colocando-a dentro de categories.
+# o primeiro indice da lista sera o nome de sua pasta.
+apps = ["/Apps", ".exe"]
+images = ["/Images", ".png", ".jpeg", ".jpg", ".bmp", ".gif", ".tif", ".tiff", ".jfif"]
+documents = ["/Documents", ".txt", ".docx", ".pdf", ".pptx", ".xls", "xlsx"]
+categories = [images, documents, apps]
 
 def folder():
 
     folder_dir = "C:/Past/" + str(date.today())
 
     if not os.path.exists(folder_dir):
-        os.mkdir(folder_dir)
-        os.mkdir(folder_dir + "/Pictures")
-        os.mkdir(folder_dir + "/Documents")
+        os.mkdir(folder_dir)   
+        for category in categories:
+            os.mkdir(folder_dir + category[0])
         os.mkdir(folder_dir + "/Miscellaneous")
     return folder_dir
 
 
 def organize():
 
+    name = argv[0].encode()
+    name = name.split(b"\\")[-1]
+    name = name.decode('utf-8')
+    
     path = "C:/Users/" + os.getlogin() + "/Desktop/"
 
     files = os.listdir(path)
@@ -28,18 +35,19 @@ def organize():
     dir = folder()
 
     for file in files:
-        
+        misc = True
         file_name = os.path.splitext(file)
 
-        if file_name[0] == "org" or file_name[0] == "else":
+        if file == name or file_name[0] == "else":
             continue
-        elif file_name[1] in images:
-            move(path, file, file_name, dir + "/Pictures")
-        elif file_name[1] in documents:
-            move(path, file, file_name, dir + "/Documents")
         else:
-            move(path, file, file_name, dir + "/Miscellaneous")
-        
+            for category in categories:
+                if file_name[-1] in category:
+                    move(path, file, file_name, dir + category[0])
+                    misc = False
+            if misc:
+                move(path, file, file_name, dir + "/Miscellaneous")
+
 
 def move(path, file, file_name, directory):
     i = 2
@@ -83,6 +91,4 @@ def write(action, old, new, first=False):
     log.close()
     
 
-os.system("cls")
 organize()
-os.system("cls")
