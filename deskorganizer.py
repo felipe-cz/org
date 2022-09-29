@@ -7,10 +7,6 @@ images = [".png", ".jpeg", ".jpg", ".bmp", ".gif", ".tif", ".tiff", ".jfif"]
 documents = [".txt", ".docx", ".pdf", ".pptx", ".xls", "xlsx"]
 
 
-def print_center(s):
-    print(s.center(shutil.get_terminal_size().columns), end="")
-
-
 def folder():
 
     folder_dir = "C:/Past/" + str(date.today())
