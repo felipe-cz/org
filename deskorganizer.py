@@ -10,6 +10,7 @@ images = ["/Images", ".png", ".jpeg", ".jpg", ".bmp", ".gif", ".tif", ".tiff", "
 documents = ["/Documents", ".txt", ".docx", ".pdf", ".pptx", ".xls", "xlsx"]
 categories = [images, documents, apps]
 
+# cria automaticamente as pastas para as categorias escolhidas, e uma pasta para itens nao catalogados
 def folder():
 
     folder_dir = "C:/Past/" + str(date.today())
@@ -22,6 +23,7 @@ def folder():
     return folder_dir
 
 
+# separa item por item e escolhe o caminho para onde ele sera movido
 def organize():
 
     name = argv[0].encode()
@@ -49,6 +51,7 @@ def organize():
                 move(path, file, file_name, dir + "/Miscellaneous")
 
 
+# move o item para a pasta de sua categoria
 def move(path, file, file_name, directory):
     i = 2
     while True:
@@ -73,7 +76,7 @@ def move(path, file, file_name, directory):
         else:
             break
 
-
+# escreve a mudanca no log
 def write(action, old, new, first=False):
 
     dir = folder()
